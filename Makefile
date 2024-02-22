@@ -16,7 +16,7 @@ setup:
 restart:
 	@make stop
 	@make setup
-	
+
 # Pour enregistrer les travaux sur ta branche github
 # commande exemple: make msg="add user table" save-all
 # avec msg comme variable str
@@ -24,3 +24,11 @@ save-all:
 	git add *
 	git commit -m "$(msg)"
 	git push
+
+# Créer nouv branche
+# commande exemple: make b="v1" msg="version 1" create-branch
+create-branch:
+	git checkout -b $(b)
+	git add *
+	git commit -m "$(msg)"
+	git push --set-upstream origin $(b)
