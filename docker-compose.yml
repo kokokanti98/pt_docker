@@ -1,0 +1,51 @@
+version: '3'
+services:
+  mysql:
+    image: 'mysql:latest'
+    container_name: prestashop-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: prestashop
+      MYSQL_DATABASE: prestashop
+    networks:
+      - prestashop
+    ports:
+      - 3306:3306
+      
+
+  prestashop:
+    container_name: prestashop
+    #image: prestashop/prestashop:latest
+    image: prestashop/prestashop:1.7.8.6-apache
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - 8080:80
+    environment:
+      DB_SERVER: mysql
+      DB_NAME: prestashop
+      DB_USER: root
+      DB_PASSWD: prestashop
+    networks:
+      - prestashop
+
+  phpmyadmin:
+      image: phpmyadmin:latest
+      restart: always
+      ports:
+        - 8081:80
+      environment:
+        - PMA_ARBITRARY=1
+        - PMA_HOST=mysql
+        - PMA_USER=root
+        - PMA_PASSWORD=prestashop
+      networks:
+        - prestashop
+      depends_on:
+        - mysql
+
+networks:
+    prestashop:
+
+
