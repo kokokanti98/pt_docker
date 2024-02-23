@@ -11,6 +11,8 @@ services:
       - prestashop
     ports:
       - 3306:3306
+    volumes:
+      - dbdata:/var/lib/mysql
       
 
   prestashop:
@@ -40,12 +42,25 @@ services:
         - PMA_HOST=mysql
         - PMA_USER=root
         - PMA_PASSWORD=prestashop
+        - PS_FOLDER_ADMIN=admin4577
+        - PS_FOLDER_INSTALL=install4577
       networks:
         - prestashop
       depends_on:
         - mysql
+      volumes:
+        - type: bind
+          source: ./modules/testModule # local path to the module
+          target: /var/www/html/modules/testModule # path to be mounted in the container
+        - type: bind
+          source: ./themes/myTheme # local path to the theme
+          target:  /var/www/html/themes/myTheme # path to be mounted in the container
+        - psdata:/var/www/html
 
 networks:
     prestashop:
-
+    
+volumes:
+  dbdata:
+  psdata:
 
