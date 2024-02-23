@@ -32,3 +32,8 @@ create-branch:
 	git add *
 	git commit -m "$(msg)"
 	git push --set-upstream origin $(b)
+
+# make docker-log
+# Voir les logs pour accéder au logs du docker(voir si l'installationa fonctionne, où y a des erreurs)
+docker-log:
+	docker-compose logs -f
